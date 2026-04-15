@@ -1,0 +1,112 @@
+-- =============================================================
+-- Bronze Layer — Raw Table Creation
+-- =============================================================
+-- Script Purpose:
+--     This script creates all Bronze layer tables inside the
+--     'Datawarehouse' database. Bronze tables store raw data
+--     loaded directly from source systems (CRM & ERP) with
+--     no transformations applied.
+--
+-- Tables Created:
+--     1. bronze_crm_cust_info
+--     2. bronze_crm_prd_info
+--     3. bronze_crm_sales_details
+--     4. bronze_erp_loc_a101
+--     5. bronze_erp_cust_az12
+--     6. bronze_erp_px_cust_cat_g1v2
+--
+-- WARNING:
+--     Running this script will drop and recreate all Bronze
+--     tables. All existing raw data will be permanently lost.
+-- =============================================================
+
+USE Datawarehouse;
+
+-- -------------------------------------------------------------
+-- Table : bronze_crm_cust_info
+-- Source: CRM System
+-- Desc  : Raw customer information — name, gender,
+--         marital status, and account creation date.
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS bronze_crm_cust_info;
+CREATE TABLE bronze_crm_cust_info (
+    cst_id             INT,
+    cst_key            VARCHAR(50),
+    cst_firstname      VARCHAR(50),
+    cst_lastname       VARCHAR(50),
+    cst_marital_status VARCHAR(50),
+    cst_gndr           VARCHAR(50),
+    cst_create_date    DATE
+);
+
+-- -------------------------------------------------------------
+-- Table : bronze_crm_prd_info
+-- Source: CRM System
+-- Desc  : Raw product information — product key, cost,
+--         product line, and validity date range.
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS bronze_crm_prd_info;
+CREATE TABLE bronze_crm_prd_info (
+    prd_id       INT,
+    prd_key      VARCHAR(50),
+    prd_nm       VARCHAR(50),
+    prd_cost     INT,
+    prd_line     VARCHAR(50),
+    prd_start_dt DATETIME,
+    prd_end_dt   DATETIME
+);
+
+-- -------------------------------------------------------------
+-- Table : bronze_crm_sales_details
+-- Source: CRM System
+-- Desc  : Raw sales transactions — order, ship, due dates
+--         stored as INT, and sales financials.
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS bronze_crm_sales_details;
+CREATE TABLE bronze_crm_sales_details (
+    sls_ord_num  VARCHAR(50),
+    sls_prd_key  VARCHAR(50),
+    sls_cust_id  INT,
+    sls_order_dt INT,
+    sls_ship_dt  INT,
+    sls_due_dt   INT,
+    sls_sales    INT,
+    sls_quantity INT,
+    sls_price    INT
+);
+
+-- -------------------------------------------------------------
+-- Table : bronze_erp_loc_a101
+-- Source: ERP System
+-- Desc  : Raw customer location and country data.
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS bronze_erp_loc_a101;
+CREATE TABLE bronze_erp_loc_a101 (
+    cid   VARCHAR(50),
+    cntry VARCHAR(50)
+);
+
+-- -------------------------------------------------------------
+-- Table : bronze_erp_cust_az12
+-- Source: ERP System
+-- Desc  : Raw customer demographic data — birthdate & gender.
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS bronze_erp_cust_az12;
+CREATE TABLE bronze_erp_cust_az12 (
+    cid   VARCHAR(50),
+    bdate DATE,
+    gen   VARCHAR(50)
+);
+
+-- -------------------------------------------------------------
+-- Table : bronze_erp_px_cust_cat_g1v2
+-- Source: ERP System
+-- Desc  : Raw product category, subcategory, and maintenance.
+-- -------------------------------------------------------------
+DROP TABLE IF EXISTS bronze_erp_px_cust_cat_g1v2;
+CREATE TABLE bronze_erp_px_cust_cat_g1v2 (
+    id          VARCHAR(50),
+    cat         VARCHAR(50),
+    subcat      VARCHAR(50),
+    maintenance VARCHAR(50)
+);
