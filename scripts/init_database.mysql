@@ -1,1 +1,29 @@
+-- =============================================================
+-- Create Database
+-- =============================================================
+-- Script Purpose:
+--     This script creates a new database named 'Datawarehouse'
+--     after checking if it already exists.
+--     If the database exists, it is dropped and recreated.
+--
+-- Note: MySQL does not support Schemas like SQL Server.
+--       Instead, we use a naming convention to logically
+--       separate layers:
+--         bronze_*  → Raw data layer
+--         silver_*  → Cleaned & transformed layer
+--         gold_*    → Business-ready views (analytics layer)
+--
+-- WARNING:
+--     Running this script will drop the entire 'Datawarehouse'
+--     database if it exists. All data will be permanently deleted.
+--     Proceed with caution and ensure proper backups beforehand.
+-- =============================================================
+
+-- Drop and recreate the 'Datawarehouse' database
+DROP DATABASE IF EXISTS Datawarehouse;
+
+-- Create the 'Datawarehouse' database
+CREATE DATABASE Datawarehouse;
+
+USE Datawarehouse;
 
