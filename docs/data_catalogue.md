@@ -173,7 +173,7 @@ Star schema for analytics and reporting.
 - Combines CRM + ERP customer data
 - One record per customer
 - Surrogate key used
----
+
   | Column          | Data Type   | Description                                                                    |
 | --------------- | ----------- | ------------------------------------------------------------------------------ |
 | customer_key    | INT         | Surrogate key uniquely identifying each customer record in the dimension table |
@@ -193,7 +193,7 @@ Star schema for analytics and reporting.
 ### 📦 `gold_dim_products`
 - Only active products included
 - Includes category + subcategory mapping
----
+
 | Column         | Data Type    | Description                         |
 | -------------- | ------------ | ----------------------------------- |
 | product_key    | INT          | Surrogate key for product dimension |
@@ -219,7 +219,7 @@ Star schema for analytics and reporting.
 - Customers
 - Products
 - Contains sales metrics
----
+
 | Column       | Data Type   | Description                  |
 | ------------ | ----------- | ---------------------------- |
 | order_number | VARCHAR(50) | Unique sales order number    |
