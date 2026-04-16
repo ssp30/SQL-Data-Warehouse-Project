@@ -1,4 +1,9 @@
 # 📊 Data Catalog - MySQL Data Warehouse Project
+## 🧭 Data Flow
+
+**Bronze → Raw Data Ingestion**  
+**Silver → Cleaned + Standardized Data**  
+**Gold → Business Ready Star Schema**
 
 ## 🏗️ Project Overview
 This Data Warehouse project follows a **Medallion Architecture (Bronze → Silver → Gold)** built using **MySQL**.
@@ -97,8 +102,6 @@ Product category mapping table.
 | maintenance | VARCHAR | Maintenance flag |
 
 ---
-## 🏢 ERP TABLES
----
 
 # 🥈 SILVER LAYER (Cleaned Data)
 
@@ -132,7 +135,8 @@ The Silver layer contains:
 ### Sales Data
 - Converted integer dates to MySQL `DATE`
 - Fixed invalid (0 or wrong format)
-- Recalculated incorrect sales values:
+- Recalculated incorrect sales values using business rule:
+  sales = quantity × price
 
 ---
 
@@ -140,7 +144,7 @@ The Silver layer contains:
 - Removed `NAS` prefix from customer ID
 - Standardized gender values
 - Converted country codes:
-- US → United States
+- US → United States  
 - DE → Germany
 
 ---
@@ -169,7 +173,8 @@ Star schema for analytics and reporting.
 - Combines CRM + ERP customer data
 - One record per customer
 - Surrogate key used
-| Column          | Data Type   | Description                                                                    |
+---
+  | Column          | Data Type   | Description                                                                    |
 | --------------- | ----------- | ------------------------------------------------------------------------------ |
 | customer_key    | INT         | Surrogate key uniquely identifying each customer record in the dimension table |
 | customer_id     | INT         | Unique numerical identifier assigned to each customer                          |
@@ -188,6 +193,7 @@ Star schema for analytics and reporting.
 ### 📦 `gold_dim_products`
 - Only active products included
 - Includes category + subcategory mapping
+---
 | Column         | Data Type    | Description                         |
 | -------------- | ------------ | ----------------------------------- |
 | product_key    | INT          | Surrogate key for product dimension |
@@ -213,6 +219,7 @@ Star schema for analytics and reporting.
 - Customers
 - Products
 - Contains sales metrics
+---
 | Column       | Data Type   | Description                  |
 | ------------ | ----------- | ---------------------------- |
 | order_number | VARCHAR(50) | Unique sales order number    |
@@ -228,15 +235,13 @@ Star schema for analytics and reporting.
 
 ---
 
-               gold.dim_customers
+                             gold.dim_customers
                         |
                         |
         gold.fact_sales (central fact table)
                         |
                         |
                gold.dim_products
-
----
 
 ---
 
@@ -281,4 +286,9 @@ This data warehouse enables:
 - SQL (Window Functions, Joins, CTEs)
 - Data Warehousing Concepts
 
+---
+## 📌 Notes
+- This project is implemented in MySQL
+- All transformations are done using SQL queries
+- Gold layer follows Star Schema design
 
