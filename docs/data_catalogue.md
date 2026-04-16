@@ -143,9 +143,9 @@ The Silver layer contains:
 ### ERP DATA
 - Removed `NAS` prefix from customer ID
 - Standardized gender values
-- Converted country codes:
-- US → United States  
-- DE → Germany
+- Country Standardization:
+  - US → United States  
+  - DE → Germany
 
 ---
 
@@ -235,7 +235,7 @@ Star schema for analytics and reporting.
 
 ---
 
-                             gold.dim_customers
+                gold.dim_customers
                         |
                         |
         gold.fact_sales (central fact table)
@@ -247,12 +247,21 @@ Star schema for analytics and reporting.
 
 # ⚙️ KEY DESIGN PRINCIPLES
 
-## ✔ Data Quality
-- No duplicate customers
-- No invalid dates
-- No negative sales
-- Standardized categorical values
+## 🧪 Data Quality & Validation Checks
 
+### 🔹 Data Cleaning Rules
+- Duplicate removal using `ROW_NUMBER()`
+- Null handling for critical fields
+- Standardized categorical values (Gender, Country, Status)
+
+### 🔹 Data Integrity Checks
+- Referential integrity between fact and dimension tables
+- No orphan records in fact table
+
+### 🔹 Business Rules Validation
+- Sales consistency: `sales = quantity × price`
+- No negative or zero values in sales, price, quantity
+- No invalid or future dates
 ---
 
 ## ✔ MySQL Optimizations
