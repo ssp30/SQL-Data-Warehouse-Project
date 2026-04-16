@@ -1,8 +1,13 @@
--- =====================================================
+/*
+===============================================================================
+DDL Script: Create Bronze Tables
+===============================================================================
+Script Purpose: Store raw data from CRM & ERP systems without transformation
+    This script creates 'bronze' tables , dropping existing tables 
+    if they already exist.
+	  Run this script to re-define the DDL structure of 'bronze' Tables
+==============================================================================
 -- BRONZE LAYER - DDL (RAW DATA TABLES)
--- =====================================================
--- PURPOSE:
--- Store raw data from CRM & ERP systems without transformation
 -- =====================================================
 
 USE Datawarehouse;
