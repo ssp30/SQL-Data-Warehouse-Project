@@ -169,12 +169,39 @@ Star schema for analytics and reporting.
 - Combines CRM + ERP customer data
 - One record per customer
 - Surrogate key used
+| Column          | Data Type   | Description                                                                    |
+| --------------- | ----------- | ------------------------------------------------------------------------------ |
+| customer_key    | INT         | Surrogate key uniquely identifying each customer record in the dimension table |
+| customer_id     | INT         | Unique numerical identifier assigned to each customer                          |
+| customer_number | VARCHAR(50) | Alphanumeric identifier used for tracking customers                            |
+| first_name      | VARCHAR(50) | Customer first name                                                            |
+| last_name       | VARCHAR(50) | Customer last name                                                             |
+| country         | VARCHAR(50) | Customer country of residence                                                  |
+| marital_status  | VARCHAR(50) | Marital status (Married, Single, etc.)                                         |
+| gender          | VARCHAR(50) | Gender (Male, Female, n/a)                                                     |
+| birthdate       | DATE        | Date of birth (YYYY-MM-DD)                                                     |
+| create_date     | DATE        | Record creation date                                                           |
+
 
 ---
 
 ### 📦 `gold_dim_products`
 - Only active products included
 - Includes category + subcategory mapping
+| Column         | Data Type    | Description                         |
+| -------------- | ------------ | ----------------------------------- |
+| product_key    | INT          | Surrogate key for product dimension |
+| product_id     | INT          | Unique product identifier           |
+| product_number | VARCHAR(50)  | Business product code               |
+| product_name   | VARCHAR(100) | Name of the product                 |
+| category_id    | VARCHAR(50)  | Category ID from product key        |
+| category       | VARCHAR(100) | Product category name               |
+| subcategory    | VARCHAR(100) | Product sub-category                |
+| maintenance    | VARCHAR(50)  | Maintenance flag                    |
+| cost           | INT          | Product cost                        |
+| product_line   | VARCHAR(50)  | Product line (Road, Mountain, etc.) |
+| start_date     | DATE         | Product start/activation date       |
+
 
 ---
 
@@ -186,31 +213,72 @@ Star schema for analytics and reporting.
 - Customers
 - Products
 - Contains sales metrics
+| Column       | Data Type   | Description                  |
+| ------------ | ----------- | ---------------------------- |
+| order_number | VARCHAR(50) | Unique sales order number    |
+| product_key  | INT         | Foreign key to dim_products  |
+| customer_key | INT         | Foreign key to dim_customers |
+| order_date   | DATE        | Order placement date         |
+| ship_date    | DATE        | Shipping date                |
+| due_date     | DATE        | Expected delivery date       |
+| sales_amount | INT         | Total sales amount           |
+| quantity     | INT         | Units sold                   |
+| price        | INT         | Unit price                   |
+
 
 ---
 
-## 🔗 DATA MODEL
-                    Customers
-                      │
-                      │
-Products ──────── Sales (FACT) ──────── Products
-                      │
-                   Customers
+               gold.dim_customers
+                        |
+                        |
+        gold.fact_sales (central fact table)
+                        |
+                        |
+               gold.dim_products
 
-🥇 1. gold.dim_customers
-📌 Purpose:
+---
 
-Stores customer details enriched with demographic and geographic data.
+---
 
-📋 Columns:
-Column Name	Data Type	Description
-customer_key	INT	Surrogate key uniquely identifying each customer record in the dimension table.
-customer_id	INT	Unique numerical identifier assigned to each customer.
-customer_number	VARCHAR(50)	Alphanumeric identifier representing the customer, used for tracking and referencing.
-first_name	VARCHAR(50)	The customer's first name, as recorded in the system.
-last_name	VARCHAR(50)	The customer's last name or family name.
-country	VARCHAR(50)	The country of residence for the customer (e.g., 'Australia').
-marital_status	VARCHAR(50)	The marital status of the customer (e.g., 'Married', 'Single').
-gender	VARCHAR(50)	The gender of the customer (e.g., 'Male', 'Female', 'n/a').
-birthdate	DATE	The date of birth of the customer, formatted as YYYY-MM-DD.
-create_date	DATE	The date when the customer record was created in the system.
+# ⚙️ KEY DESIGN PRINCIPLES
+
+## ✔ Data Quality
+- No duplicate customers
+- No invalid dates
+- No negative sales
+- Standardized categorical values
+
+---
+
+## ✔ MySQL Optimizations
+- Indexes on join keys:
+  - customer_id
+  - product_key
+  - sales customer reference
+
+---
+
+## ✔ Modeling Approach
+- Star Schema design
+- Surrogate keys in Gold layer
+- Slowly changing product handling (via dates)
+
+---
+
+# 🚀 BUSINESS VALUE
+
+This data warehouse enables:
+- Customer analysis
+- Sales performance tracking
+- Product profitability analysis
+- Location-based insights
+- Business reporting dashboards
+
+---
+
+# 🛠️ TECH STACK
+- MySQL
+- SQL (Window Functions, Joins, CTEs)
+- Data Warehousing Concepts
+
+
