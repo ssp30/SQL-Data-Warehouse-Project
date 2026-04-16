@@ -68,12 +68,36 @@ Stores raw sales transactions.
 #### `bronze_erp_cust_az12`
 Customer demographic data.
 
+| Column | Data Type | Description |
+|--------|----------|-------------|
+| cid | VARCHAR | Customer ID (may include prefix NAS) |
+| bdate | DATE | Birth date |
+| gen | VARCHAR | Gender |
+
+---
+
 #### `bronze_erp_loc_a101`
 Customer location data.
+
+| Column | Data Type | Description |
+|--------|----------|-------------|
+| cid | VARCHAR | Customer ID (may contain '-') |
+| cntry | VARCHAR | Country code |
+
+---
 
 #### `bronze_erp_px_cust_cat_g1v2`
 Product category mapping table.
 
+| Column | Data Type | Description |
+|--------|----------|-------------|
+| id | VARCHAR | Category ID |
+| cat | VARCHAR | Category name |
+| subcat | VARCHAR | Sub category |
+| maintenance | VARCHAR | Maintenance flag |
+
+---
+## 🏢 ERP TABLES
 ---
 
 # 🥈 SILVER LAYER (Cleaned Data)
@@ -101,11 +125,92 @@ The Silver layer contains:
 - Split product key into category + product code
 - Handled missing cost using `IFNULL`
 - Standardized product line values
-- Derived end date using `LEAD()` function
+- Derived product end date using `LEAD()` function
 
 ---
 
 ### Sales Data
 - Converted integer dates to MySQL `DATE`
-- Fixed invalid or zero dates
+- Fixed invalid (0 or wrong format)
 - Recalculated incorrect sales values:
+
+---
+
+### ERP DATA
+- Removed `NAS` prefix from customer ID
+- Standardized gender values
+- Converted country codes:
+- US → United States
+- DE → Germany
+
+---
+
+## 📦 SILVER TABLES
+
+- `silver_crm_cust_info`
+- `silver_crm_prd_info`
+- `silver_crm_sales_details`
+- `silver_erp_cust_az12`
+- `silver_erp_loc_a101`
+- `silver_erp_px_cust_cat_g1v2`
+
+---
+
+# 🥇 GOLD LAYER (BUSINESS MODEL)
+
+## 📌 Purpose
+Star schema for analytics and reporting.
+
+---
+
+## ⭐ DIMENSION TABLES
+
+### 🧑 `gold_dim_customers`
+- Combines CRM + ERP customer data
+- One record per customer
+- Surrogate key used
+
+---
+
+### 📦 `gold_dim_products`
+- Only active products included
+- Includes category + subcategory mapping
+
+---
+
+## 💰 FACT TABLE
+
+### `gold_fact_sales`
+- Central transaction table
+- Connects:
+- Customers
+- Products
+- Contains sales metrics
+
+---
+
+## 🔗 DATA MODEL
+                    Customers
+                      │
+                      │
+Products ──────── Sales (FACT) ──────── Products
+                      │
+                   Customers
+
+🥇 1. gold.dim_customers
+📌 Purpose:
+
+Stores customer details enriched with demographic and geographic data.
+
+📋 Columns:
+Column Name	Data Type	Description
+customer_key	INT	Surrogate key uniquely identifying each customer record in the dimension table.
+customer_id	INT	Unique numerical identifier assigned to each customer.
+customer_number	VARCHAR(50)	Alphanumeric identifier representing the customer, used for tracking and referencing.
+first_name	VARCHAR(50)	The customer's first name, as recorded in the system.
+last_name	VARCHAR(50)	The customer's last name or family name.
+country	VARCHAR(50)	The country of residence for the customer (e.g., 'Australia').
+marital_status	VARCHAR(50)	The marital status of the customer (e.g., 'Married', 'Single').
+gender	VARCHAR(50)	The gender of the customer (e.g., 'Male', 'Female', 'n/a').
+birthdate	DATE	The date of birth of the customer, formatted as YYYY-MM-DD.
+create_date	DATE	The date when the customer record was created in the system.
