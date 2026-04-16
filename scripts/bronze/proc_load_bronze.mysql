@@ -1,1 +1,17 @@
+-- =====================================================
+-- BRONZE LAYER - LOAD DATA
+-- =====================================================
+-- PURPOSE:
+-- Load CSV files into bronze tables
+-- =====================================================
 
+USE Datawarehouse;
+
+-- Example (Update path before running)
+
+-- LOAD DATA INFILE 'datasets/source_crm/cust_info.csv'
+-- INTO TABLE bronze_crm_cust_info
+-- FIELDS TERMINATED BY ','
+-- IGNORE 1 ROWS;
+
+-- Repeat for all datasets
