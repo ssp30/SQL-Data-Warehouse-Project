@@ -1,5 +1,5 @@
 -- =============================================================
--- Create Database
+-- Create Database Datawarehouse.
 -- =============================================================
 -- Script Purpose:
 --     This script creates a new database named 'Datawarehouse'
