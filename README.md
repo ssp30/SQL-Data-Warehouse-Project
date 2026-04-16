@@ -101,13 +101,16 @@ This data warehouse supports:
 ---
 
 ## 📁 Project Structure
-📦 Data Warehouse Project
-├── bronze/ # Raw data layer scripts
-├── silver/ # Cleaned data transformation scripts
-├── gold/ # Star schema (fact & dimension logic)
-├── docs/ # Data catalog & documentation
-├── init_database # Database setup script
+
+```bash
+Data Warehouse Project/
+├── bronze/              # Raw data layer scripts
+├── silver/              # Cleaned transformation scripts
+├── gold/                # Star schema (fact & dimension logic)
+├── docs/                # Data catalog & documentation
+├── init_database.sql    # Database setup script
 └── README.md
+```
 
 ---
 
@@ -130,8 +133,19 @@ For detailed schema, column-level definitions, and full transformation logic:
 
 ---
 
-## 🎯 Learning Outcomes
+## ⭐ Why This Project Matters
 
+This project simulates a real-world enterprise data warehouse where raw CRM & ERP data is transformed into a structured analytical model using industry-standard practices.
+
+It demonstrates:
+- ETL pipeline design
+- Data modeling (Star Schema)
+- Data quality enforcement
+- SQL-based transformation logic
+
+---
+
+## 🎯 Learning Outcomes
 Through this project, I learned:
 
 - How to design a layered data warehouse architecture
@@ -144,12 +158,13 @@ Through this project, I learned:
 
 ## 🛠️ Project Status
 
-✔ Completed  
-✔ Fully SQL-based  
-✔ Ready for portfolio & interviews  
+✔ Completed End-to-End ETL Pipeline  
+✔ Fully SQL-Based Data Warehouse  
+✔ Portfolio & Interview Ready Project  
 
 ---
 
 ## 👨‍💻 Author
 
-MySQL Data Warehouse Project
+**Amaan Petiwala**  
+MySQL | ETL | Data Warehousing
